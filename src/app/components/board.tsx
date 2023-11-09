@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from "react";
+import Cell from "./cell";
 
 interface BoardProps {
   boardArray: number[][];
@@ -115,12 +116,10 @@ const Board: FC<BoardProps> = ({ boardArray }) => {
         <div key={rowIndex} className="flex">
           {/* col */}
           {row.map((col, colIndex) => (
-            <div
+            <Cell
               key={colIndex}
-              className="flex justify-center items-center border-solid border-2 border-sky-500 w-12 h-12"
-            >
-              {col}
-            </div>
+              value={col}
+            />
           ))}
         </div>
       ))}
