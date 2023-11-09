@@ -136,6 +136,7 @@ const popBalloons = ({
 
 const Board: FC<BoardProps> = ({ boardArray }) => {
   const [renderBoardArray, setRenderBoardArray] = useState<number[][]>([]);
+  const [biggestNumber, setBiggestNumber] = useState<number>(0);
 
   useEffect(() => {
     const newArr = updateConnectedBalloons(boardArray);
@@ -143,12 +144,32 @@ const Board: FC<BoardProps> = ({ boardArray }) => {
     setRenderBoardArray(newArr);
   }, [boardArray]);
 
+  useEffect(() => {
+    let biggest = 0;
+    renderBoardArray.forEach((row) => {
+      row.forEach((col) => {
+        if (col > biggest) {
+          biggest = col;
+        }
+      });
+    });
+
+    setBiggestNumber(biggest);
+    // todo enhance for initial rending
+    if (biggest === 0) {
+      alert("won");
+    }
+  }, [renderBoardArray]);
+
   const handleClickCell = (
     e: React.MouseEvent<HTMLDivElement>,
     { value, x, y }: { value: number; x: number; y: number }
   ) => {
-    // console.info({ value, x, y }, renderBoardArray[y][x]);
     // decide wpn or lost
+    if (value < biggestNumber) {
+      alert("lost");
+      return;
+    }
 
     // pop
     const newArr = [...renderBoardArray];
@@ -159,12 +180,12 @@ const Board: FC<BoardProps> = ({ boardArray }) => {
       result: newArr,
       targetNumber: value,
     });
-    // console.info({ newArr });
     setRenderBoardArray(newArr);
   };
 
   return (
     <div>
+      {biggestNumber}
       {renderBoardArray.map((row, rowIndex) => (
         // row
         <div key={rowIndex} className="flex">
