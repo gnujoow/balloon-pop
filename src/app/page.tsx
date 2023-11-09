@@ -2,17 +2,11 @@
 
 import { useEffect, useState } from "react";
 
-import Board from "./components/board";
+import Board, { GameStateType } from "./components/board";
 import { onSaveClipboard } from "./utils/interactions";
 import { convert2DArrayToHex, convertHexTo2DArray } from "./utils/number";
 import { useSearchParams } from "next/navigation";
 
-export enum GameStateType {
-  init,
-  playing,
-  won,
-  lost,
-}
 export default function Home() {
   const searchParams = useSearchParams();
 

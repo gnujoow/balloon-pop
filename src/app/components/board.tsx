@@ -1,8 +1,14 @@
 import { FC, useEffect, useState } from "react";
 import Cell from "./cell";
-import { GameStateType } from "../page";
 
 let count = 0;
+
+export enum GameStateType {
+  init,
+  playing,
+  won,
+  lost,
+}
 interface DFSParams {
   arr: number[][];
   x: number;
