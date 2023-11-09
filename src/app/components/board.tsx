@@ -1,10 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import Cell from "./cell";
-import { render } from "react-dom";
-
-interface BoardProps {
-  boardArray: number[][];
-}
+import { GameStateType } from "../page";
 
 let count = 0;
 interface DFSParams {
@@ -134,7 +130,16 @@ const popBalloons = ({
   }
 };
 
-const Board: FC<BoardProps> = ({ boardArray }) => {
+interface BoardProps {
+  boardArray: number[][];
+  gameState?: GameStateType;
+  onClickCopy?: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    arr: number[][]
+  ) => void;
+}
+
+const Board: FC<BoardProps> = ({ boardArray, gameState, onClickCopy }) => {
   const [renderBoardArray, setRenderBoardArray] = useState<number[][]>([]);
   const [biggestNumber, setBiggestNumber] = useState<number>(0);
 
@@ -155,11 +160,10 @@ const Board: FC<BoardProps> = ({ boardArray }) => {
     });
 
     setBiggestNumber(biggest);
-    // todo enhance for initial rending
-    // if (biggest === 0) {
-    //   alert("won");
+    // if (biggestNumber === 0 && gameState === GameStateType.playing) {
+    //   alert("win");
     // }
-  }, [renderBoardArray]);
+  }, [renderBoardArray, gameState]);
 
   const handleClickCell = (
     e: React.MouseEvent<HTMLDivElement>,
@@ -200,6 +204,15 @@ const Board: FC<BoardProps> = ({ boardArray }) => {
           ))}
         </div>
       ))}
+
+      {gameState === GameStateType.playing && (
+        <button
+          className="bg-slate-500 hover:bg-slate-300 text-white p-2 rounded"
+          onClick={(e) => onClickCopy?.(e, renderBoardArray)}
+        >
+          copy
+        </button>
+      )}
     </div>
   );
 };

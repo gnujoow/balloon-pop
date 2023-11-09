@@ -1,10 +1,12 @@
 "use client";
 
-import Image from "next/image";
-import Board from "./components/board";
 import { useState } from "react";
 
-enum GameStateType {
+import Board from "./components/board";
+import { onSaveClipboard } from "./utils/interactions";
+import { convert2DArrayToHex } from "./utils/number";
+
+export enum GameStateType {
   init,
   playing,
   won,
@@ -46,6 +48,22 @@ export default function Home() {
     setGameState(GameStateType.playing);
   };
 
+  const onClickCopyUrl = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    arr: number[][]
+  ) => {
+    const board = convert2DArrayToHex(arr);
+    const queryObject = {
+      board,
+      size: boardSize.toString(),
+    };
+
+    const queryStr = new URLSearchParams(queryObject).toString();
+    const url = `${window.location.href}?${queryStr}`;
+    
+    onSaveClipboard(e, url);
+  };
+
   if (gameState === GameStateType.init) {
     const mockArray: number[][] = Array.from({ length: boardSize }, () =>
       Array(boardSize).fill(0)
@@ -76,10 +94,13 @@ export default function Home() {
   if (gameState === GameStateType.playing) {
     return (
       <div>
-        <div>
-          {gameSeed}:{gameSeed.toString(16)}
-        </div>
-        <Board boardArray={boardArray} />
+        <div>Game Seed - {`[${gameSeed.toString(16)}]`}</div>
+        <hr />
+        <Board
+          boardArray={boardArray}
+          gameState={gameState}
+          onClickCopy={onClickCopyUrl}
+        />
       </div>
     );
   }
