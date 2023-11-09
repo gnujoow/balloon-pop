@@ -1,20 +1,41 @@
 "use client";
 
-import Image from "next/image";
-import Board from "./components/board";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-enum GameStateType {
+import Board from "./components/board";
+import { onSaveClipboard } from "./utils/interactions";
+import { convert2DArrayToHex, convertHexTo2DArray } from "./utils/number";
+import { useSearchParams } from "next/navigation";
+
+export enum GameStateType {
   init,
   playing,
   won,
   lost,
 }
 export default function Home() {
+  const searchParams = useSearchParams();
+
   const [boardSize, setBoardSize] = useState<number>(4);
   const [gameState, setGameState] = useState<GameStateType>(GameStateType.init);
   const [gameSeed, setGameSeed] = useState<number>(0);
   const [boardArray, setBoardArray] = useState<number[][]>([[]]);
+
+  useEffect(() => {
+    if (searchParams.has("board") && searchParams.has("size")) {
+      const board = searchParams.get("board") as string;
+      const size = searchParams.get("size") as string;
+
+      const boardSeedNumber = board ? parseInt(board, 16) : 0;
+      const boardSize = size ? parseInt(size, 10) : 0;
+      const boardArray = convertHexTo2DArray(boardSeedNumber, boardSize);
+
+      setGameSeed(boardSeedNumber);
+      setBoardSize(boardSize);
+      setBoardArray(boardArray);
+      setGameState(GameStateType.playing);
+    }
+  }, [searchParams.has("board"), searchParams.has("size")]);
 
   const handleChangeBoardSize = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -27,23 +48,28 @@ export default function Home() {
     while (seed === 0) {
       seed = Math.floor(Math.random() * Math.pow(2, boardSize * boardSize));
     }
-    const string = seed.toString(2);
 
-    let array = new Array(boardSize)
-      .fill(null)
-      .map(() => new Array(boardSize).fill(0));
-
-    let binaryIndex = string.length - 1;
-    for (let i = boardSize - 1; i >= 0; i--) {
-      for (let j = boardSize - 1; j >= 0; j--) {
-        if (binaryIndex >= 0) {
-          array[i][j] = parseInt(string[binaryIndex--], 10);
-        }
-      }
-    }
+    const array = convertHexTo2DArray(seed, boardSize);
+    
     setGameSeed(seed);
     setBoardArray(array);
     setGameState(GameStateType.playing);
+  };
+
+  const onClickCopyUrl = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    arr: number[][]
+  ) => {
+    const board = convert2DArrayToHex(arr);
+    const queryObject = {
+      board,
+      size: boardSize.toString(),
+    };
+
+    const queryStr = new URLSearchParams(queryObject).toString();
+    const url = `${window.location.origin}/?${queryStr}`;
+
+    onSaveClipboard(e, url);
   };
 
   if (gameState === GameStateType.init) {
@@ -76,10 +102,13 @@ export default function Home() {
   if (gameState === GameStateType.playing) {
     return (
       <div>
-        <div>
-          {gameSeed}:{gameSeed.toString(16)}
-        </div>
-        <Board boardArray={boardArray} />
+        <div>Game Seed - {`[${gameSeed.toString(16)}]`}</div>
+        <hr />
+        <Board
+          boardArray={boardArray}
+          gameState={gameState}
+          onClickCopy={onClickCopyUrl}
+        />
       </div>
     );
   }
