@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import Cell from "./cell";
 
 let count = 0;
@@ -151,7 +151,17 @@ const Board: FC<BoardProps> = ({ boardArray, gameState, onClickCopy }) => {
 
   useEffect(() => {
     const newArr = updateConnectedBalloons(boardArray);
-    console.info({ newArr });
+    
+    let biggest = 0;
+    newArr.forEach((row) => {
+      row.forEach((col) => {
+        if (col > biggest) {
+          biggest = col;
+        }
+      });
+    });
+
+    setBiggestNumber(biggest);
     setRenderBoardArray(newArr);
   }, [boardArray]);
 
@@ -176,7 +186,6 @@ const Board: FC<BoardProps> = ({ boardArray, gameState, onClickCopy }) => {
     });
     setRenderBoardArray(newArr);
 
-
     let biggest = 0;
     renderBoardArray.forEach((row) => {
       row.forEach((col) => {
@@ -186,7 +195,7 @@ const Board: FC<BoardProps> = ({ boardArray, gameState, onClickCopy }) => {
       });
     });
 
-    if(biggest === 0) {
+    if (biggest === 0) {
       alert("won");
     }
     setBiggestNumber(biggest);
