@@ -16,6 +16,21 @@ export function convert2DArrayToHex(arr: number[][]) {
   return ret;
 }
 
-export function convertHexTo2DArray(hex: string, size: number) {
-  return hex;
+export function convertHexTo2DArray(hex: number, size: number) {
+  const string = hex.toString(2);
+
+  let ret = new Array(size)
+    .fill(null)
+    .map(() => new Array(size).fill(0));
+
+  let binaryIndex = string.length - 1;
+  for (let i = size - 1; i >= 0; i--) {
+    for (let j = size - 1; j >= 0; j--) {
+      if (binaryIndex >= 0) {
+        ret[i][j] = parseInt(string[binaryIndex--], 10);
+      }
+    }
+  }
+
+  return ret;
 }
