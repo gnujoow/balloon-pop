@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+# Goal
+- [ ]  2D 격자판 (그리드)을 생성해야 합니다. 각 격자는 '풍선🎈' 또는 ' '(빈칸)으로 표시됩니다.
+- [ ]  풍선을 클릭 시 터지게 되며 상하좌우로 연결된 경우 같이 터지게 됩니다.
+    
+    ![같은 색 풍선은 연결된 풍선으로 간주합니다.](https://prod-files-secure.s3.us-west-2.amazonaws.com/9ef2399c-afae-48d3-be2b-09126471e54e/1d5917f2-d2bb-4d24-888b-490d422abe0c/Untitled.png)
+    
+    같은 색 풍선은 연결된 풍선으로 간주합니다.
+    
+- [ ]  사용자는 한번에 가장 많은 풍선을 터뜨릴 수 있는 순서대로 풍선을 클릭해야 합니다.
+(큰 → 작은 순서, 동일한 크기일 시 순서 상관 없음.)
+    
+    ![위와 같은 격자가 있는 경우 1, 2, 3, 4의 순으로 터뜨려야 합니다.](https://prod-files-secure.s3.us-west-2.amazonaws.com/9ef2399c-afae-48d3-be2b-09126471e54e/90371592-d343-4eb6-a55b-26d4b3a698f7/Untitled.png)
+    
+    위와 같은 격자가 있는 경우 1, 2, 3, 4의 순으로 터뜨려야 합니다.
+    
+- [ ]  위 조건에 맞지 않는 풍선을 클릭하면 게임에서 패배합니다.
+    
+    ![패배 예시. 디자인은 무관합니다.](https://prod-files-secure.s3.us-west-2.amazonaws.com/9ef2399c-afae-48d3-be2b-09126471e54e/72a6ae37-73b7-4357-8fbd-485ec33ec0a0/Untitled.png)
+    
+    패배 예시. 디자인은 무관합니다.
+    
+- [ ]  선택 사항: 다크 테마로 전환할 수 있는 토글 버튼을 제공해야 합니다.
+- [ ]  선택 사항: 게임 시작 시 격자의 크기를 사용자가 원하는 대로 조정할 수 있어야 합니다.
+- [ ]  선택 사항: 게임 URL을 복사하여 공유할 경우, 게임을 현재 시점의 상태로 공유할 수 있어야 합니다.
