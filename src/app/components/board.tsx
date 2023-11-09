@@ -149,22 +149,6 @@ const Board: FC<BoardProps> = ({ boardArray, gameState, onClickCopy }) => {
     setRenderBoardArray(newArr);
   }, [boardArray]);
 
-  useEffect(() => {
-    let biggest = 0;
-    renderBoardArray.forEach((row) => {
-      row.forEach((col) => {
-        if (col > biggest) {
-          biggest = col;
-        }
-      });
-    });
-
-    setBiggestNumber(biggest);
-    // if (biggestNumber === 0 && gameState === GameStateType.playing) {
-    //   alert("win");
-    // }
-  }, [renderBoardArray, gameState]);
-
   const handleClickCell = (
     e: React.MouseEvent<HTMLDivElement>,
     { value, x, y }: { value: number; x: number; y: number }
@@ -185,6 +169,21 @@ const Board: FC<BoardProps> = ({ boardArray, gameState, onClickCopy }) => {
       targetNumber: value,
     });
     setRenderBoardArray(newArr);
+
+
+    let biggest = 0;
+    renderBoardArray.forEach((row) => {
+      row.forEach((col) => {
+        if (col > biggest) {
+          biggest = col;
+        }
+      });
+    });
+
+    if(biggest === 0) {
+      alert("won");
+    }
+    setBiggestNumber(biggest);
   };
 
   return (
