@@ -101,6 +101,39 @@ function fillConnectResult({
   }
 }
 
+interface PopBalloonsParams {
+  grid: number[][];
+  x: number;
+  y: number;
+  targetNumber: number;
+  result: number[][];
+}
+const popBalloons = ({
+  grid,
+  x,
+  y,
+  result,
+  targetNumber,
+}: PopBalloonsParams) => {
+  if (
+    x < 0 ||
+    x >= grid.length ||
+    y < 0 ||
+    y >= grid[0].length ||
+    result[y][x] === 0
+  ) {
+    return;
+  }
+
+  if (grid[y][x] === targetNumber) {
+    result[y][x] = 0;
+    popBalloons({ grid, result, targetNumber, x: x + 1, y });
+    popBalloons({ grid, result, targetNumber, x: x - 1, y });
+    popBalloons({ grid, result, targetNumber, x, y: y + 1 });
+    popBalloons({ grid, result, targetNumber, x, y: y - 1 });
+  }
+};
+
 const Board: FC<BoardProps> = ({ boardArray }) => {
   const [renderBoardArray, setRenderBoardArray] = useState<number[][]>([]);
 
@@ -114,7 +147,20 @@ const Board: FC<BoardProps> = ({ boardArray }) => {
     e: React.MouseEvent<HTMLDivElement>,
     { value, x, y }: { value: number; x: number; y: number }
   ) => {
-    console.info({ value, x, y }, renderBoardArray[y][x]);
+    // console.info({ value, x, y }, renderBoardArray[y][x]);
+    // decide wpn or lost
+
+    // pop
+    const newArr = [...renderBoardArray];
+    popBalloons({
+      grid: renderBoardArray,
+      x,
+      y,
+      result: newArr,
+      targetNumber: value,
+    });
+    // console.info({ newArr });
+    setRenderBoardArray(newArr);
   };
 
   return (
