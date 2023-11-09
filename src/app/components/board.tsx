@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import Cell from "./cell";
+import { render } from "react-dom";
 
 interface BoardProps {
   boardArray: number[][];
@@ -109,6 +110,13 @@ const Board: FC<BoardProps> = ({ boardArray }) => {
     setRenderBoardArray(newArr);
   }, [boardArray]);
 
+  const handleClickCell = (
+    e: React.MouseEvent<HTMLDivElement>,
+    { value, x, y }: { value: number; x: number; y: number }
+  ) => {
+    console.info({ value, x, y }, renderBoardArray[y][x]);
+  };
+
   return (
     <div>
       {renderBoardArray.map((row, rowIndex) => (
@@ -119,6 +127,8 @@ const Board: FC<BoardProps> = ({ boardArray }) => {
             <Cell
               key={colIndex}
               value={col}
+              position={{ x: colIndex, y: rowIndex }}
+              onClickCell={handleClickCell}
             />
           ))}
         </div>
