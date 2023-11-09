@@ -30,6 +30,10 @@ export default function Home() {
       const boardSize = size ? parseInt(size, 10) : 0;
       const boardArray = convertHexTo2DArray(boardSeedNumber, boardSize);
 
+      if (boardSeedNumber <= 0) {
+        return;
+      }
+
       setGameSeed(boardSeedNumber);
       setBoardSize(boardSize);
       setBoardArray(boardArray);
@@ -50,7 +54,7 @@ export default function Home() {
     }
 
     const array = convertHexTo2DArray(seed, boardSize);
-    
+
     setGameSeed(seed);
     setBoardArray(array);
     setGameState(GameStateType.playing);
