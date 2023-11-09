@@ -16,25 +16,23 @@ export default function Home() {
   const [gameSeed, setGameSeed] = useState<number>(0);
   const [boardArray, setBoardArray] = useState<number[][]>([[]]);
 
-  const array = [
-    [1, 0, 1, 1],
-    [1, 1, 0, 0],
-    [0, 0, 1, 1],
-    [1, 1, 0, 1],
-  ];
-
   const handleChangeBoardSize = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setBoardSize(Number(value));
   };
 
   const onClickStart = () => {
-    const seed = Math.random();
+    let seed = 0;
+
+    while (seed === 0) {
+      seed = Math.floor(Math.random() * Math.pow(2, boardSize * boardSize));
+    }
     const string = seed.toString(2);
 
     let array = new Array(boardSize)
       .fill(null)
       .map(() => new Array(boardSize).fill(0));
+
     let binaryIndex = string.length - 1;
     for (let i = boardSize - 1; i >= 0; i--) {
       for (let j = boardSize - 1; j >= 0; j--) {
@@ -59,7 +57,7 @@ export default function Home() {
           <input
             type="range"
             min="2"
-            max="12"
+            max="7"
             onChange={handleChangeBoardSize}
           />
         </div>
@@ -74,10 +72,13 @@ export default function Home() {
       </div>
     );
   }
+
   if (gameState === GameStateType.playing) {
     return (
       <div>
-        <div>{gameSeed}</div>
+        <div>
+          {gameSeed}:{gameSeed.toString(16)}
+        </div>
         <Board boardArray={boardArray} />
       </div>
     );
