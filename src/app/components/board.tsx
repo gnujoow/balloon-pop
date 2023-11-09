@@ -156,9 +156,9 @@ const Board: FC<BoardProps> = ({ boardArray }) => {
 
     setBiggestNumber(biggest);
     // todo enhance for initial rending
-    if (biggest === 0) {
-      alert("won");
-    }
+    // if (biggest === 0) {
+    //   alert("won");
+    // }
   }, [renderBoardArray]);
 
   const handleClickCell = (
