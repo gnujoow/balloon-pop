@@ -6,7 +6,7 @@ import Board, { GameStateType } from "./components/board";
 import { onSaveClipboard } from "./utils/interactions";
 import { convert2DArrayToHex, convertHexTo2DArray } from "./utils/number";
 import { useSearchParams } from "next/navigation";
-import { Button, Divider, Slider, Stack, Typography } from "@mui/material";
+import { Button, Slider, Stack, Typography } from "@mui/material";
 import Grid3x3Icon from "@mui/icons-material/Grid3x3";
 import Grid4x4Icon from "@mui/icons-material/Grid4x4";
 import GameResultModal from "./components/gameResult";
