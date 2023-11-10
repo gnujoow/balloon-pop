@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Cell from "./cell";
 import { Box, Button, styled } from "@mui/material";
 
@@ -144,9 +144,15 @@ interface BoardProps {
     e: React.MouseEvent<HTMLButtonElement>,
     arr: number[][]
   ) => void;
+  onGameStateChanged?: (newGameState: GameStateType) => void;
 }
 
-const Board: FC<BoardProps> = ({ boardArray, gameState, onClickCopy }) => {
+const Board: FC<BoardProps> = ({
+  boardArray,
+  gameState,
+  onClickCopy,
+  onGameStateChanged,
+}) => {
   const [renderBoardArray, setRenderBoardArray] = useState<number[][]>([]);
   const [biggestNumber, setBiggestNumber] = useState<number>(0);
 
@@ -172,7 +178,7 @@ const Board: FC<BoardProps> = ({ boardArray, gameState, onClickCopy }) => {
   ) => {
     // decide wpn or lost
     if (value < biggestNumber) {
-      alert("lost");
+      onGameStateChanged?.(GameStateType.lost);
       return;
     }
 
@@ -197,7 +203,7 @@ const Board: FC<BoardProps> = ({ boardArray, gameState, onClickCopy }) => {
     });
 
     if (biggest === 0) {
-      alert("won");
+      onGameStateChanged?.(GameStateType.won);
     }
     setBiggestNumber(biggest);
   };

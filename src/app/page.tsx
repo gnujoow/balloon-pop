@@ -9,6 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { Button, Divider, Slider, Stack, Typography } from "@mui/material";
 import Grid3x3Icon from "@mui/icons-material/Grid3x3";
 import Grid4x4Icon from "@mui/icons-material/Grid4x4";
+import GameResultModal from "./components/gameResult";
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -42,7 +43,15 @@ export default function Home() {
     setBoardSize(newValue as number);
   };
 
-  const onClickStart = () => {
+  const handleChangeGameState = (newGameState: GameStateType) => {
+    setGameState(newGameState);
+  };
+
+  const handleClickToInit = () => {
+    setGameState(GameStateType.init);
+  };
+
+  const handleClickStart = () => {
     let seed = 0;
 
     while (seed === 0) {
@@ -91,7 +100,7 @@ export default function Home() {
           <Grid4x4Icon />
         </Stack>
 
-        <Button variant="contained" onClick={onClickStart}>
+        <Button variant="contained" onClick={handleClickStart}>
           start
         </Button>
 
@@ -100,19 +109,25 @@ export default function Home() {
     );
   }
 
-  if (gameState === GameStateType.playing) {
-    return (
-      <>
-        <Typography variant="h4" gutterBottom>
-          Game Seed - {`[${gameSeed.toString(16)}]`}
-        </Typography>
+  return (
+    <>
+      <Typography variant="caption" gutterBottom>
+        Game Seed - {`[${gameSeed.toString(16)}]`}
+      </Typography>
 
-        <Board
-          boardArray={boardArray}
-          gameState={gameState}
-          onClickCopy={onClickCopyUrl}
+      <Board
+        boardArray={boardArray}
+        gameState={gameState}
+        onClickCopy={onClickCopyUrl}
+        onGameStateChanged={handleChangeGameState}
+      />
+      {(gameState === GameStateType.won ||
+        gameState === GameStateType.lost) && (
+        <GameResultModal
+          gameResultState={gameState}
+          onClickToInit={handleClickToInit}
         />
-      </>
-    );
-  }
+      )}
+    </>
+  );
 }
