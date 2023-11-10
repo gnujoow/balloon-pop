@@ -1,3 +1,4 @@
+import { Paper, SxProps } from "@mui/material";
 import { FC } from "react";
 
 interface CellProps {
@@ -9,20 +10,25 @@ interface CellProps {
   ) => void;
 }
 const Cell: FC<CellProps> = ({ value, position, onClickCell }) => {
-  const classname =
-    "flex justify-center items-center border-solid border-2 border-sky-500 w-12 h-12";
+  const sxStyle: SxProps = {
+    width: "4rem",
+    height: "4rem",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: "3rem",
+  };
   if (value === 0) {
-    return <div className={`${classname}`} />;
+    return <Paper sx={{ ...sxStyle, cursor: "not-allowed" }} />;
   }
   return (
-    <div
-      className={`${classname}`}
+    <Paper
+      // todo add hover style
+      sx={{ ...sxStyle, cursor: "pointer" }}
       onClick={(e) => onClickCell(e, { value, ...position })}
     >
-      {/* todo: 나중에 value영역 지울것 */}
-      {value}
       🎈
-    </div>
+    </Paper>
   );
 };
 

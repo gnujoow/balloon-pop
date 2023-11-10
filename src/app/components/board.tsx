@@ -1,5 +1,6 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import Cell from "./cell";
+import { Box, Button, styled } from "@mui/material";
 
 let count = 0;
 
@@ -151,7 +152,7 @@ const Board: FC<BoardProps> = ({ boardArray, gameState, onClickCopy }) => {
 
   useEffect(() => {
     const newArr = updateConnectedBalloons(boardArray);
-    
+
     let biggest = 0;
     newArr.forEach((row) => {
       row.forEach((col) => {
@@ -202,33 +203,42 @@ const Board: FC<BoardProps> = ({ boardArray, gameState, onClickCopy }) => {
   };
 
   return (
-    <div>
-      {biggestNumber}
-      {renderBoardArray.map((row, rowIndex) => (
-        // row
-        <div key={rowIndex} className="flex">
-          {/* col */}
-          {row.map((col, colIndex) => (
-            <Cell
-              key={colIndex}
-              value={col}
-              position={{ x: colIndex, y: rowIndex }}
-              onClickCell={handleClickCell}
-            />
-          ))}
-        </div>
-      ))}
-
+    <BoardWrapper
+      sx={{
+        mt: 4,
+      }}
+    >
       {gameState === GameStateType.playing && (
-        <button
-          className="bg-slate-500 hover:bg-slate-300 text-white p-2 rounded"
+        <Button
+          sx={{ mb: 2 }}
+          variant="outlined"
           onClick={(e) => onClickCopy?.(e, renderBoardArray)}
         >
           copy
-        </button>
+        </Button>
       )}
-    </div>
+
+      <div>
+        {renderBoardArray.map((row, rowIndex) => (
+          // row
+          <Box key={rowIndex} sx={{ display: "flex", gap: "2px", mb: "2px" }}>
+            {/* col */}
+            {row.map((col, colIndex) => (
+              <Cell
+                key={colIndex}
+                value={col}
+                position={{ x: colIndex, y: rowIndex }}
+                onClickCell={handleClickCell}
+              />
+            ))}
+          </Box>
+        ))}
+      </div>
+      {/* {biggestNumber} */}
+    </BoardWrapper>
   );
 };
+
+const BoardWrapper = styled(Box)(({ theme }) => ({}));
 
 export default Board;
