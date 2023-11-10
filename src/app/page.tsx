@@ -6,6 +6,10 @@ import Board, { GameStateType } from "./components/board";
 import { onSaveClipboard } from "./utils/interactions";
 import { convert2DArrayToHex, convertHexTo2DArray } from "./utils/number";
 import { useSearchParams } from "next/navigation";
+import { Button, Slider, Stack, Typography } from "@mui/material";
+import Grid3x3Icon from "@mui/icons-material/Grid3x3";
+import Grid4x4Icon from "@mui/icons-material/Grid4x4";
+import GameResultModal from "./components/gameResult";
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -35,12 +39,19 @@ export default function Home() {
     }
   }, [searchParams.has("board"), searchParams.has("size")]);
 
-  const handleChangeBoardSize = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setBoardSize(Number(value));
+  const handleChangeBoardSize = (event: Event, newValue: number | number[]) => {
+    setBoardSize(newValue as number);
   };
 
-  const onClickStart = () => {
+  const handleChangeGameState = (newGameState: GameStateType) => {
+    setGameState(newGameState);
+  };
+
+  const handleClickToInit = () => {
+    setGameState(GameStateType.init);
+  };
+
+  const handleClickStart = () => {
     let seed = 0;
 
     while (seed === 0) {
@@ -75,39 +86,48 @@ export default function Home() {
       Array(boardSize).fill(0)
     );
     return (
-      <div>
-        <div>
-          <label>Board Size {boardSize}</label>
-          <input
-            type="range"
-            min="2"
-            max="7"
+      <>
+        <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
+          <Grid3x3Icon />
+          <Slider
+            aria-label="Volume"
+            value={boardSize}
             onChange={handleChangeBoardSize}
+            min={2}
+            max={7}
+            step={1}
           />
-        </div>
-        <button
-          className="bg-slate-500 hover:bg-slate-300 text-white p-2 rounded"
-          onClick={onClickStart}
-        >
+          <Grid4x4Icon />
+        </Stack>
+
+        <Button variant="contained" onClick={handleClickStart}>
           start
-        </button>
-        <hr />
+        </Button>
+
         <Board boardArray={mockArray} />
-      </div>
+      </>
     );
   }
 
-  if (gameState === GameStateType.playing) {
-    return (
-      <div>
-        <div>Game Seed - {`[${gameSeed.toString(16)}]`}</div>
-        <hr />
-        <Board
-          boardArray={boardArray}
-          gameState={gameState}
-          onClickCopy={onClickCopyUrl}
+  return (
+    <>
+      <Typography variant="caption" gutterBottom>
+        Game Seed - {`[${gameSeed.toString(16)}]`}
+      </Typography>
+
+      <Board
+        boardArray={boardArray}
+        gameState={gameState}
+        onClickCopy={onClickCopyUrl}
+        onGameStateChanged={handleChangeGameState}
+      />
+      {(gameState === GameStateType.won ||
+        gameState === GameStateType.lost) && (
+        <GameResultModal
+          gameResultState={gameState}
+          onClickToInit={handleClickToInit}
         />
-      </div>
-    );
-  }
+      )}
+    </>
+  );
 }
