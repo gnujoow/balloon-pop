@@ -1,8 +1,8 @@
 export function convert2DArrayToHex(arr: number[][]) {
-  const binaryArray = arr.map(row => row.map(item => item > 0 ? 1 : 0));
+  const binaryArray = arr.map((row) => row.map((item) => (item > 0 ? 1 : 0)));
 
   const boardSize = binaryArray.length;
-  let binaryString = '';
+  let binaryString = "";
 
   for (let i = 0; i < boardSize; i++) {
     for (let j = 0; j < boardSize; j++) {
@@ -19,9 +19,7 @@ export function convert2DArrayToHex(arr: number[][]) {
 export function convertHexTo2DArray(hex: number, size: number) {
   const string = hex.toString(2);
 
-  let ret = new Array(size)
-    .fill(null)
-    .map(() => new Array(size).fill(0));
+  let ret = new Array(size).fill(null).map(() => new Array(size).fill(0));
 
   let binaryIndex = string.length - 1;
   for (let i = size - 1; i >= 0; i--) {

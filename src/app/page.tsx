@@ -67,7 +67,7 @@ export default function Home() {
 
   const onClickCopyUrl = (
     e: React.MouseEvent<HTMLButtonElement>,
-    arr: number[][]
+    arr: number[][],
   ) => {
     const board = convert2DArrayToHex(arr);
     const queryObject = {
@@ -83,7 +83,7 @@ export default function Home() {
 
   if (gameState === GameStateType.init) {
     const mockArray: number[][] = Array.from({ length: boardSize }, () =>
-      Array(boardSize).fill(0)
+      Array(boardSize).fill(0),
     );
     return (
       <>

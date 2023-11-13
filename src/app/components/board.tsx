@@ -41,10 +41,10 @@ function updateConnectedBalloons(arr: number[][]): number[][] {
   const rows = arr.length;
   const cols = arr[0].length;
   const visited: boolean[][] = Array.from({ length: rows }, () =>
-    Array(cols).fill(false)
+    Array(cols).fill(false),
   );
   const result: number[][] = Array.from({ length: rows }, () =>
-    Array(cols).fill(0)
+    Array(cols).fill(0),
   );
 
   for (let i = 0; i < rows; i++) {
@@ -142,7 +142,7 @@ interface BoardProps {
   gameState?: GameStateType;
   onClickCopy?: (
     e: React.MouseEvent<HTMLButtonElement>,
-    arr: number[][]
+    arr: number[][],
   ) => void;
   onGameStateChanged?: (newGameState: GameStateType) => void;
 }
@@ -174,7 +174,7 @@ const Board: FC<BoardProps> = ({
 
   const handleClickCell = (
     e: React.MouseEvent<HTMLDivElement>,
-    { value, x, y }: { value: number; x: number; y: number }
+    { value, x, y }: { value: number; x: number; y: number },
   ) => {
     // decide wpn or lost
     if (value < biggestNumber) {

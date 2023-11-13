@@ -6,7 +6,7 @@ interface CellProps {
   position: { x: number; y: number };
   onClickCell: (
     e: React.MouseEvent<HTMLDivElement>,
-    { value, x, y }: { value: number; x: number; y: number }
+    { value, x, y }: { value: number; x: number; y: number },
   ) => void;
 }
 const Cell: FC<CellProps> = ({ value, position, onClickCell }) => {
