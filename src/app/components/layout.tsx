@@ -22,7 +22,7 @@ const LayoutThemeProvider = ({ children }: { children: any }) => {
     setDarkMode((val) => {
       document.documentElement.setAttribute(
         "data-theme",
-        val ? "light" : "dark"
+        val ? "light" : "dark",
       );
       localStorage.setItem("theme", val ? "light" : "dark");
 
@@ -39,7 +39,7 @@ const LayoutThemeProvider = ({ children }: { children: any }) => {
       setDarkMode(matchMedia.matches);
       document.documentElement.setAttribute(
         "data-theme",
-        matchMedia.matches ? "dark" : "light"
+        matchMedia.matches ? "dark" : "light",
       );
     }
   }, []);
